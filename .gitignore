@@ -1,0 +1,5 @@
+# Jupyter notebooks inner files
+.ipynb_checkpoints/
+
+# video or gif files if the animation is saved
+*.mp4
