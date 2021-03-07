@@ -1,2 +1,11 @@
 # video or gif files if the animation is saved
 *.mp4
+
+# folder where useful files related to the projects are stored (but without need to track them)
+local_utils/
+
+# Latex intermediate files
+*.gz
+
+# Let's not track for now the pdf of the paper
+*.pdf
