@@ -27,6 +27,10 @@
 \usepackage{parskip} % omit tab at the beginning of a new paragraph
 \usepackage{upquote} % Upright quotes for verbatim code
 
+\usepackage[bottom]{footmisc} % enforce footnotes on bottom
+
+\usepackage{comment} % for multilline comments
+
 % Figures and styles
 %\usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
 \usepackage{float}
@@ -38,10 +42,22 @@
 % Math
 \usepackage{amsmath} % Equations
 \usepackage{amssymb} % Equations
+\usepackage{amsthm} %  theorems
+
+% Theorems are numbered based on "section", lemmas and corollary based on theorem
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+
 \usepackage{mathrsfs}
 \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
 
 
+%% To display conditions/explanation of termns in equations
+\usepackage{array}
+\newenvironment{conditions}
+  {\par\vspace{\abovedisplayskip}\noindent\begin{tabular}{>{$}l<{$} @{${}={}$} l}}
+  {\end{tabular}\par\vspace{\belowdisplayskip}}
 
 %%
 %% BEGIN DOCUMENT
@@ -68,8 +84,8 @@
 \end{figure}
 
 \begin{abstract}
-The nine-dots puzzle is a mainstream brain-teaser. It's often sponsored by business coaches and salesmen as a benchmark of creative thinking, as its solution requires to ``think outside-the-box".
-In this paper, I review the nine-dots puzzle and then analyze a generalized version of the original problem, which is extended to a squared grid consisting of an arbitrary number of points: i.e, the starting \emph{9-dots puzzle} becomes the generic \emph{9-16-25-36.. dots puzzle}. First, I show how the general solution can be achieved. You'll then learn that starting from a particular grid size upwards, salesmen can no longer enthrall you with out-of-the-box tricks. Finally, I propose an intriguing arithmetical interpretation of the solution to the general bidimensional problem.
+The nine-dots puzzle is a mainstream brain-teaser. It's often sponsored by business coaches and management consultants as a benchmark of creative thinking, as its solution requires to ``think outside-the-box".
+In this paper, I review the nine-dots puzzle and then analyze a generalized version of the original problem, which is extended to a squared grid consisting of an arbitrary number of points: i.e, the starting \emph{9-dots puzzle} becomes the generic \emph{9-16-25-36.. dots puzzle}. First, I show how the general solution can be achieved. You'll then learn that starting from a particular grid size upwards, consultants can no longer enthrall you with out-of-the-box tricks. Finally, I propose an intriguing arithmetical interpretation of the solution to the general bidimensional problem.
 \\
 \\
 \textbf{Disclaimer}: the squared grid problem has already been solved and thoroughly treated. Marco Ripà and Pablo Ramirez first extended the nine-dots puzzle to an arbitrarily-sized squared grid and then also to multiple dimensions! You can find their papers in the \hyperlink{references}{References} section.\\
@@ -82,11 +98,11 @@ This document simply aims to be an enjoyable and informal digression on the squa
 	\section{The nine dots puzzle}
 	\label{nine-dots-puzzle}
 }
-The \textbf{nine-dots puzzle} has been first cited by Sam Loyd's in his \emph{Cyclopedia of Puzzles} (see \autoref{fig:egg_puzzle}).
+The \textbf{nine-dots puzzle} has been first cited by Sam Loyd in his \emph{Cyclopedia of Puzzles} (see \autoref{fig:egg_puzzle}).
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.54\textwidth]{images/egg_puzzle.jpg}
-	\caption{The original illustration of the nine-dots puzzle in the Sam Loyd's "Cyclopedia of puzzle" (1914). The author entitled it as \emph{the Christoforus Columbus egg puzzle}; this is just a reference to the \emph{egg of Columbus}: you don't actually need 9 eggs to try it yourself.}
+	\caption{The original illustration of the nine-dots puzzle in the Sam Loyd's "Cyclopedia of puzzles" (1914). The author entitled it as \emph{the Christoforus Columbus egg puzzle}; this is just a reference to the \emph{egg of Columbus}: you don't actually need 9 eggs to try it yourself.}
 \label{fig:egg_puzzle}
 \end{figure}
 In its basic formulation, the goal is to join nine dots arranged in a squared grid with the fewest number of straight lines, and without lifting the pen. Take your time to figure out the solution...
@@ -96,7 +112,7 @@ In its basic formulation, the goal is to join nine dots arranged in a squared gr
 \caption{The 9-dots puzzle: join all the points using straight lines, without lifting the pen.}
 \label{fig:9-dots-grid}
 \end{figure}
-If you concluded that at least five lines are required to join all the points, and your solution is something like \autoref{fig:9-dots-wrong} alas! you embraced mediocrity and should not complain about your pen-pusher job. But don't worry: contrast your outcome with the one given by the king in the Sam Loyd's illustration (again \autoref{fig:egg_puzzle}): you're ahead by one line against the king, and thus still highly qualified to rule a nation.
+If you concluded that at least five lines are required to join all the points, and your solution looks something like \autoref{fig:9-dots-wrong} alas! you embraced mediocrity and should not complain about your pen-pusher job. But don't worry: contrast your outcome with the one given by the king in the Sam Loyd's illustration (again \autoref{fig:egg_puzzle}): you're ahead by one line against the king, and thus still highly qualified to rule a nation.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.3\textwidth]{images/9-dots-grid.png}
@@ -104,9 +120,8 @@ If you concluded that at least five lines are required to join all the points, a
 \caption{A suspiciously trivial (and thus wrong) solution to the 9-dots puzzle.}
 \label{fig:9-dots-wrong}
 \end{figure}
-How is possible to connect the dots with fewer lines?
-What hinders most of the people is that they restrict themselves to draw lines within the grid of points, myopically focusing on an immaginary boundary around the grid (similar to the thin grey borders that I maliciously put in the above figures). In order to get to the ``right" solution (or at least to a more optimal solution: in \hyperlink{appendices}{Appendices}, you'll see why I make such a clarification) you need to \textbf{``think outside the box''}. Using a more creative mindset, a solution can be drawn consisting of just four lines, as shown in \autoref{fig:9-dots-solution}.
-%% TODO references to the figure's number are all wrong! But the links are correct.
+How is it possible to connect the dots with fewer lines?
+What hinders most of the people is that they restrict themselves to draw lines within the grid of points, myopically focusing on an immaginary boundary around the grid (similar to the thin grey borders that I maliciously put in the above figures). In order to get to the ``right" solution\footnote{I should say ``to a more optimal solution": in \hyperlink{appendices}{Appendices}, you'll see why I make such a clarification} you need to \textbf{``think outside the box''}. Using a more creative mindset, a solution can be drawn consisting of just four lines, as shown in \autoref{fig:9-dots-solution}.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.3\textwidth]{images/9-dots-solution.png}
@@ -120,8 +135,118 @@ Nice trick, isn't it?! No surprise, this intriguing conundrum was revived by psy
 	\section{The extended problem and its solution}
 	\label{the-extended-problem-and-its-solution}
 }
-%
-%First, I'll show that the general solution can be drawn iteratively, as you may have already guessed
+
+Since we are now willing to push ourselves ``out of any box", it's time to reason beyond nine dots. We are going to consider no less than arbitrarily-sized grids: that is, squared grids of N x N dots ($N >=3$). The goal of the extended puzzle is the same as for the basic version: join all the dots using the fewest number of strokes and without lifting the pen from the paper.\\
+If you already struggled with nine dots, don't panic: the generalized problem is easier than it seems. Let's start first with a 4 x 4 grid (\autoref{fig:4x4_grid}); don't peek the solution displayed below and take your time to solve...
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.3\textwidth]{images/4x4_grid.png}
+\caption{Now that you know the trick, you should be able to solve this almost on the fly.}
+\label{fig:4x4_grid}
+\end{figure}
+
+How many lines did you draw? If you managed to join the dots just with six lines, congratulations! As for the nine-dots puzzle, optimal solutions for this case can only be found by moving outside the box. One possible solution could resemble the guy in \autoref{fig:4x4_grid_solution}.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.3\textwidth]{images/4x4_grid_solution.png}
+\caption{A possible out-of-the-box solution to the 4x4 puzzle.}
+\label{fig:4x4_grid_solution}
+\end{figure}
+However, if you haven't figure it out yet, note that a clever way to solve the 4x4 grid relies on connecting two adjacent outer borders of the grid and notice that what you are left with is the original nine-dots puzzle (\autoref{fig:4x4_grid_iteration}). Still, six lines has been used.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.3\textwidth]{images/4x4_grid_iteration.png}
+\includegraphics[width=0.3\textwidth]{images/4x4_grid_iteration_solution.png}
+\caption{The out-of-the-box solution to the 4x4 grid, leaning on the solution to the original nine-dots puzzle.}
+\label{fig:4x4_grid_iteration}
+\end{figure}
+This clue is actually the keystone to guess the general solution to the problem. If you like challanges, you could exploit this huge hint to figure out the general solution on your own, otherwise keep reading.\\
+As you may have already guessed, the general solution can be constructed iteratively. Look again at the solution to the 4x4 grid in \autoref{fig:4x4_grid_iteration}: each time you connect two adjacent outer borders of the grid you then get an (N-1)-sided grid. It's all downhill from here: in \autoref{fig:6x6_grid_example} you can visualize the recipe to build the general solution applied to a 6x6 grid: first, join two adjacent outer borders so the grid size is reduced by one; repeat the process as needed, spiraling until you're left with a 3x3 grid, i.e. the original nine-dots puzzle.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.23\textwidth]{images/6x6_grid_iteration_01.png}
+\includegraphics[width=0.23\textwidth]{images/6x6_grid_iteration_02.png}
+\includegraphics[width=0.23\textwidth]{images/6x6_grid_iteration_03.png}
+\includegraphics[width=0.23\textwidth]{images/6x6_grid_solution.png}
+\caption{The recipe for the general solution, shown on a 6x6 grid: connect two adjacent outer borders, thus reducing the grid size by one; repeat the process until you are left with the nine-dots puzzle.}
+\label{fig:6x6_grid_example}
+\end{figure}
+Thanks to this recursive argument, we can now state how many lines are at least required to cover a generic NxN grid:
+\begin{equation}
+L_N = 2(N - 1)\ \ \ \  (N >=3)
+\label{eqn:line-grid-eq}
+\end{equation}
+where:
+\begin{conditions}
+	L_N  &  the number of lines of the optimal solution to the NxN problem.
+\end{conditions}
+Indeed, by applying the formula above we get that the optimal solution consists of 4 lines for the 3x3 grid and of 6 lines for the 4x4 grid. In \autoref{eqn:line-grid-eq} note how evident the recursive property of the solution is:
+\begin{equation}
+L_{N} = 2(N-1) = 2(N-2) + 2 = L_{N-1} + 2.\ \ \ \  (N >=3)
+\label{eqn:line-grid-eq-recursion}
+\end{equation}
+In other words, the optimal solution to the NxN grid consists of two lines (which join two outer borders) plus the number of lines $L_{N-1}$ of the optimal solution to the (N-1)x(N-1) grid.
+Note also that \autoref{eqn:line-grid-eq} does not hold for a 2x2 grid, for which we need at least three lines to join all the dots: damn you Euclid and your in-the-box geometry!
+
+All right, so we finally did it! We found the optimal solution to the squared grid problem! Are you happy with this? ..If you are then I suggest you to always bring a wise friend with you when you have to talk with salespeople or financial advisors, because you are inclined to be fooled by charlatans (such as the author); and the reason is that you should be tormented by this question:\\
+\emph{Can we really claim that the solutions output according to the aforementioned recursive recipe are actually optimal and therefore that \autoref{eqn:line-grid-eq} is actually valid? Isn't that possible (at least for some grid size) to find a clever zig-zagging out-of-the-box polyline consisting of even fewer segments?}\\
+Actually, it can be rigorously proved that the minimum number of lines required to solve the squared grid problem is given precisely by \autoref{eqn:line-grid-eq}; hence, the spiraling solutions that I depicted above are optimal indeed (I am not that a charlatan after all). The proof can be found in \autoref{proof-extended-solution}: this could turn out to be perhaps a little bit tricky, so feel free to skip it if you are lazy, not curious and unwilling to put a minimal effort to become a better version of yourself.\\
+For clarity's sake, I stress that the spiraling solutions (like \autoref{fig:6x6_grid_example}) although elegant and simple, are not the only feasible optimal solutions. As an example, see the weird-looking solution to the 5x5 grid displayed in \autoref{fig:5x5-grid-weird-solution}: this solution may not seem as elegant as our spiral polyline, but both the latter and the former count the same number of segments (eight, according to \autoref{eqn:line-grid-eq}) and thus are both optimal.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.3\textwidth]{images/5x5-grid-weird-solution.png}
+\caption{This solution to the 5x5 grid is weird but nonetheless optimal (it counts 8 lines).} % TODO reference to http://www.mathpuzzle.com/dots.html
+\label{fig:5x5-grid-weird-solution}
+\end{figure}
+You can find more of this creative optimal solutions \href{http://www.mathpuzzle.com/dots.html}{here}, in which btw is discussed a puzzle analogous to our but dealing with arc of circumferences instead of lines: very interesting! As a nice diversion, you could try to devise bizarre optimal solutions to arbitrary grids without relying on the boring algorithm proposed in this paper.
+
+It's time to conclude this section with a remarkable thought. Take again a closer look at the spiral solution in \autoref{fig:6x6_grid_example}. Wait a minute, what?! Astonishingly, it turns out that for $N >= 5$ the solution can be fully drawn in-the-box!
+You can boldly throw back in business coaches face how creative we have been still remaining within the box.
+
+
+%% FORMULA
+\hypertarget{proof-extended-solution} {
+	\subsection{Show me the proof, you cheater!}
+	\label{proof-extended-solution}
+}
+
+
+
+
+\begin{comment}
+So, let's come back to our 4x4 grid. First of all, for the avoidance of doubt, how can we be sure that it's not possible to do better than six lines?
+After all, the only trivial lower bound that we can state is the following:
+\begin{lemma}
+At least N+1 lines are required to optimally solve the squared grid problem for a $N\times N$ grid; i.e. N+1 is a lower bound on the number of lines of the optimal solution.
+\label{lemma:lower-bound}
+\end{lemma}
+\begin{proof}
+Indeed, we have to draw at least N+1 straight lines to join all the dots on a N-sided grid even without being constrained to hold the pen on the paper. That is, the optimal solution to the \underline{unconstrained} problem requires N+1 strokes, therefore the solution to the constrained problem we are considering cannot be cheaper. You could exploit \autoref{fig:unconstrained_solution} to grap this.
+\end{proof}
+According to the lemma, for a 4x4 grid the lower bound on the number of lines of the optimal solution is five\footnote{Btw, the lemma certifies instead why four lines are the optimum in the original nine-dots puzzle} and not six. 
+A rigorous and non-constructive proof that the lower bound for our problem is actually larger relies ultimately on the optimal way to partition a set under some constraint\footnote{in our case the constraints are those imposed by the geometric arrangment of the dots and that we are not allowed to lift the pen from the paper}: I would gently return to this topic in \autoref{arithmetical-interpretation}, in which I play with numbers and digress on the arithmetical interpretation of the solution to the squared grid puzzle. Anyway, the full mathematical analysis would be quite complicated. 
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.3\textwidth]{images/unconstrained_solution_4x4.png}
+\caption{An optimal solution to the \underline{unconstrained} problem (you are allowed to lift the pen from the paper) shown on a 4x4 grid. The solution to our problem must have at least the same number of lines.}
+\label{fig:unconstrained_solution}
+\end{figure} 
+Thus, only by examining the form of the trials and exploiting the geometry of the grid we can state that a solution with five lines is not actually feasible; and consequently that our solutions consisting of six lines are actually optimal ones.
+%skip any mathematical hocus-pocus and instead provide a more visual and heuristic argumentation.
+\end{comment}
+
+
+\begin{comment}
+So, if for this case we can convince ourselves that solving the problem with just five lines is actually unfeasible, we have proved that our solutions consisting of six lines are actually optimal. The only possible way to join 4x4 dots with five consecutive segments would be to have one segment touching 4 dots and four segments covering three dots each ($16 = 4+3+3+3+3$).
+\end{comment}
+
+%% SPIEGA Perchè il procedimento ricorsivo non vale per la griglia 3x3: la griglia 2x2 al massimo 3 linee, linee parallele
+
+\hypertarget{arithmetical-interpretation} {
+	\subsection{An arithmetical interpretation of the solution}
+	\label{arithmetical-interpretation}
+}
+
 
 \hypertarget{final-notes}{
 	\section{Final notes}
@@ -129,7 +254,7 @@ Nice trick, isn't it?! No surprise, this intriguing conundrum was revived by psy
 }
 
 \paragraph{Acknowledgements} \mbox{} \\ % mbox needed for having carriage return after "paragraph"
-Marco Ripà posed the squared grid brain-teaser during one of its stimulating \href{https://www.youtube.com/watch?v=rh-ONRXcHok}{YouTube live sessions}. I am obliged to him for the great fun I had in tackling this problem, which in turn inspired all the analysis and ideas that followed.
+Marco Ripà posed the squared grid brain-teaser during one of its stimulating \href{https://www.youtube.com/watch?v=rh-ONRXcHok}{YouTube live sessions} (in Italian). I am obliged to him for the great fun I had in tackling this problem, which in turn inspired all the analysis and ideas that followed.
 
 \paragraph{Technical note for computer nerds} \mbox{} \\
 Python was used to code the solver algorithm and produce the explanatory images of the paper. You can find the implementation in the attached Jupyter notebook, in which you can also display (and save) a nice animation drawing the solution to the puzzle.
@@ -141,6 +266,11 @@ I'll address the problem in multiple dimensions, you bet! I would also like to e
 	\section{Appendices}
 	\label{appendices}
 }
+%% Creative solutions nine-dots: folding, dots size...
+
+%% Image of the cell phone grid to unlock the phone
+
+%% Cat in a paper box, always cute
 
 \hypertarget{references}{
 	\section{References}
@@ -152,6 +282,12 @@ I'll address the problem in multiple dimensions, you bet! I would also like to e
 		The basic nine-dots puzzle has been first cited here: \emph{Cyclopedia of Puzzles, Samuel Loyd (1914)}.
 	\item
 	\href{https://en.wikipedia.org/wiki/Thinking_outside_the_box}{Wikipedia page on out-of-the-box thinking} is worth reading: the 9-dots puzzle is thoroughly discussed.
+	\item
+		\href{http://www.mathpuzzle.com/dots.html}{http://www.mathpuzzle.com/dots.html}
+	\item
+		\href{https://math.stackexchange.com/questions/23193/not-lifting-your-pen-on-the-n-times-n-grid}{https://math.stackexchange.com/questions/23193/not-lifting-your-pen-on-the-n-times-n-grid}
+	\item
+		\href{https://math.stackexchange.com/questions/1388840/number-of-lines-to-connect-n-times-n-dots}{https://math.stackexchange.com/questions/1388840/number-of-lines-to-connect-n-times-n-dots} %TODO get the reference to the cited paper
 	\item
 		A link to a really valid \href{http://utenti.quipo.it/base5/geopiana/loyd9punti4linee.htm}{online reference (in Italian)}
 	\item
