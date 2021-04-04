@@ -4,8 +4,12 @@
 # folder where useful files related to the projects are stored (but without need to track them)
 local_utils/
 
-# Latex intermediate files
+# Latex intermediate and utility files
 *.gz
+*.log
 
 # Let's not track for now the pdf of the paper
 *.pdf
+
+#Ignore file copies
+*Copy*
