@@ -27,6 +27,9 @@
 \usepackage{parskip} % omit tab at the beginning of a new paragraph
 \usepackage{upquote} % Upright quotes for verbatim code
 
+% For quotes mark
+\newcommand{\quotes}[1]{``#1''}
+
 \usepackage[bottom]{footmisc} % enforce footnotes on bottom
 
 \usepackage{comment} % for multilline comments
@@ -36,6 +39,10 @@
 \usepackage{float}
 %\floatplacement{figure}{H} % forces figures to be placed at the correct location
 \usepackage{graphicx} % Basic figure setup
+% Required for specifying captions to tables and figures
+\usepackage[font=small,labelfont=bf]{caption} 
+% subfigures: handle subcaption indexing
+\usepackage[subrefformat=parens]{subcaption}
 %\usepackage{fancyvrb} % verbatim replacement that allows latex
 \usepackage{grffile} % extends the file name processing of package graphics 
 
@@ -51,7 +58,6 @@
 
 \usepackage{mathrsfs}
 \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
-
 
 %% To display conditions/explanation of termns in equations
 \usepackage{array}
@@ -85,11 +91,15 @@
 
 \begin{abstract}
 The nine-dots puzzle is a mainstream brain-teaser. It's often sponsored by business coaches and management consultants as a benchmark of creative thinking, as its solution requires to ``think outside-the-box".
-In this paper, I review the nine-dots puzzle and then analyze a generalized version of the original problem, which is extended to a squared grid consisting of an arbitrary number of points: i.e, the starting \emph{9-dots puzzle} becomes the generic \emph{9-16-25-36.. dots puzzle}. First, I show how the general solution can be achieved. You'll then learn that starting from a particular grid size upwards, consultants can no longer enthrall you with out-of-the-box tricks. Finally, I propose an intriguing arithmetical interpretation of the solution to the general bidimensional problem.
+In this paper, I review the nine-dots puzzle and then analyze a generalized version of the original problem, which is extended to an arbitrarily-sized squared grid: i.e, the starting \emph{9-dots puzzle} becomes the generic \emph{9-16-25-36.. dots puzzle}. First, I show an algorithm to achieve a general solution to the problem: you'll learn that starting from a particular grid size upwards, consultants can no longer enthrall us with out-of-the-box tricks. I then provide a proof of optimality of the given solution. Finally, I propose a possible arithmetical interpretation of the puzzle and of the solutions to it.
 \\
 \\
-\textbf{Disclaimer}: the squared grid problem has already been solved and thoroughly treated. Marco Ripà and Pablo Ramirez first extended the nine-dots puzzle to an arbitrarily-sized squared grid and then also to multiple dimensions! You can find their papers in the \hyperlink{references}{References} section.\\
-This document simply aims to be an enjoyable and informal digression on the squared grid problem as posed by the aforementioned authors. As regards the arithmetical interpretation of the solution to the puzzle that I'll provide, so far I didn't find any counterpart by searching online but I may be wrong: in case it's an original remark, you're welcome!
+\textbf{Disclaimer}: the squared grid problem has already been solved and thoroughly treated: references to related works are disclosed all over the paper.
+This document simply aims to be an enjoyable and informal digression on an appealing mathematical puzzle, whose analysis could be grasped by anyone equipped with a shap mind even if lacking of a strong mathematical background. Under this premises, I'm pretty confident to say that the present is one of the most organized, well-written and approachable work on the topic, whether the remarks I make are original or not (I don't want to waste precious days perusing obscure papers and websites for the sole purpose of checking whether some other strange guy in the world rephrased a concept in the same way I did). If you disagree with that, I am very open to critics and eager to gather feedbacks. 
+
+
+%Marco Ripà and Pablo Ramirez first extended the nine-dots puzzle to an arbitrarily-sized squared grid and then also to multiple dimensions!
+%As regards the arithmetical interpretation of the solution to the puzzle that I'll provide, so far I didn't find any counterpart by searching online but I may be wrong: in case it's an original remark, you're welcome!
 \end{abstract}
 
 \newpage
@@ -189,7 +199,7 @@ In other words, the optimal solution to the NxN grid consists of two lines (whic
 Note also that \autoref{eqn:line-grid-eq} does not hold for a 2x2 grid, for which we need at least three lines to join all the dots: damn you Euclid and your in-the-box geometry!
 
 All right, so we finally did it! We found the optimal solution to the squared grid problem! Are you happy with this? ..If you are then I suggest you to always bring a wise friend with you when you have to talk with salespeople or financial advisors, because you are inclined to be fooled by charlatans (such as the author); and the reason is that you should be tormented by this question:\\
-\emph{Can we really claim that the solutions output according to the aforementioned recursive recipe are actually optimal and therefore that \autoref{eqn:line-grid-eq} is actually valid? Isn't that possible (at least for some grid size) to find a clever zig-zagging out-of-the-box polyline consisting of even fewer segments?}\\
+\emph{Can we really claim that the solutions output according to the aforementioned recursive recipe are actually optimal and therefore that \autoref{eqn:line-grid-eq} is valid? Isn't that possible (at least for some grid size) to find a clever zig-zagging out-of-the-box polyline consisting of even fewer segments?}\\
 Actually, it can be rigorously proved that the minimum number of lines required to solve the squared grid problem is given precisely by \autoref{eqn:line-grid-eq}; hence, the spiraling solutions that I depicted above are optimal indeed (I am not that a charlatan after all). The proof can be found in \autoref{proof-extended-solution}: this could turn out to be perhaps a little bit tricky, so feel free to skip it if you are lazy, not curious and unwilling to put a minimal effort to become a better version of yourself.\\
 For clarity's sake, I stress that the spiraling solutions (like \autoref{fig:6x6_grid_example}) although elegant and simple, are not the only feasible optimal solutions. As an example, see the weird-looking solution to the 5x5 grid displayed in \autoref{fig:5x5-grid-weird-solution}: this solution may not seem as elegant as our spiral polyline, but both the latter and the former count the same number of segments (eight, according to \autoref{eqn:line-grid-eq}) and thus are both optimal.
 \begin{figure}[H]
@@ -210,11 +220,26 @@ You can boldly throw back in business coaches face how creative we have been sti
 	\label{proof-extended-solution}
 }
 
+I'm going to prove that in order to cover a NxN squared grid of points you need at least $2(N - 1)$ segments of a polygonal chain, i.e. lines drawn without lifting the pen from the paper. If you like mathematical hocus-pocus, in this reference (TODO add ref to paper) is formally proved through a graph theory toolkit which is the minimum number of segments of a polygonal chain required to cover a \underline{rectangular NxM grid}, analysing both cases when crossing of the segments is allowed or not. Of course, such a level of mathematical cleaniness and abstraction would dilute the jocular tone of the paper, hence I'll restrict myself to a simple geometrical argument\footnote{Psss let's keep it between us, but the author has no other choice, having no proficiency whatsoever in graph theory}.
 
+First, let's start with the trivial remark that the optimal solution to our NxN problem could not consist of just horizontal and vertical lines: in this case at least $N + N - 1 = 2N - 1$ segments would be needed to join all the dots, which is more than the lower bound we have found in the previous section (\autoref{eqn:line-grid-eq}). Therefore, we are going to consider covering paths having at least a skew line.\\
+Given a polygonal chain spanning an NxN grid of points, suppose it consists of $L_{h}$ horizontal lines and $L_{v}$ vertical lines (where $L_{h}$, $L_{v} < N$); we can always think to prolong each of this lines so that the whole row or column is covered. Then, by removing all these rows and columns we are left with a (N - $L_{h}$) x (N - $L_{v}$) grid: this grid may not be regular nor squared but the following considerations still apply.\\
+So, let's deal with the residual (N - $L_{h}$) x (N - $L_{v}$) grid: we've already run out of horizonal and vertical lines, therefore we are allowed to join the dots just with skew lines. Focus in particular on the outer borders of the grid: these count $2(N-L_{h}$) + $2(N - L_{v})$ - 4 points, and we have to reach them all with skew segments; since at most two dots of the borders could be joined with diagonals, at least the following number of segments is needed:
+\begin{equation}
+L_{s}^{LB} \equiv (2(N-L_{h}) + 2(N - L_{v}) - 4) / 2 = (N- L_{h}) + (N - L_{v}) - 2
+\label{eqn:skew-lower-bound}
+\end{equation}
+where $L_{s}^{LB}$ stands for the lower bound on skew lines.\\
+Can I have some drum-roll please? To summarize, we imagined a generic solution using $L_{h}$ horizonal and $L_{v}$ vertical lines, then we have found the lower bound on the number of skew lines (\autoref{eqn:skew-lower-bound}). Thus, we can state that to cover an NxN grid with a polygonal chain we need at least this number of lines:
+\begin{equation}
+L_{h} + L_{v} + L_{s}^{LB} = L_{h} + L_{v} + (N - L_{h}) + (N - L_{v}) - 2 = 2N - 2 = 2(N-1)
+\label{eqn:lower-bound-grid}
+\end{equation}
+Exactly the result claimed in \autoref{eqn:line-grid-eq}! Clean the sweat on your forehead, pull back your jaw and enjoy. 
 
-
+%% BEGIN COMMENT
+%% Lemma for a trivial lower bound, probably obsolete now that we gave the proof of optimality
 \begin{comment}
-So, let's come back to our 4x4 grid. First of all, for the avoidance of doubt, how can we be sure that it's not possible to do better than six lines?
 After all, the only trivial lower bound that we can state is the following:
 \begin{lemma}
 At least N+1 lines are required to optimally solve the squared grid problem for a $N\times N$ grid; i.e. N+1 is a lower bound on the number of lines of the optimal solution.
@@ -232,21 +257,88 @@ A rigorous and non-constructive proof that the lower bound for our problem is ac
 \label{fig:unconstrained_solution}
 \end{figure} 
 Thus, only by examining the form of the trials and exploiting the geometry of the grid we can state that a solution with five lines is not actually feasible; and consequently that our solutions consisting of six lines are actually optimal ones.
-%skip any mathematical hocus-pocus and instead provide a more visual and heuristic argumentation.
 \end{comment}
-
-
-\begin{comment}
-So, if for this case we can convince ourselves that solving the problem with just five lines is actually unfeasible, we have proved that our solutions consisting of six lines are actually optimal. The only possible way to join 4x4 dots with five consecutive segments would be to have one segment touching 4 dots and four segments covering three dots each ($16 = 4+3+3+3+3$).
-\end{comment}
-
-%% SPIEGA Perchè il procedimento ricorsivo non vale per la griglia 3x3: la griglia 2x2 al massimo 3 linee, linee parallele
+%% END COMMENT
 
 \hypertarget{arithmetical-interpretation} {
-	\subsection{An arithmetical interpretation of the solution}
+	\subsection{An arithmetical interpretation of the puzzle}
 	\label{arithmetical-interpretation}
 }
+I know that at first glance you find geometric figures more relaxing and appealing than formulas or numbers, despite your level of mathematical sophistication; and that's fine: after all, I guess my reader is a mammal and therefore endowed with a powerful visual cortex refined by ages of evolution. Even the ancient Greeks, the mathematical nerds \emph{par excellence} of the ancient world, concieved their results through the inspection of geometrical entities. Pythagoras would have never codified the idea of \quotes{three} into a single doubly-bulged symbol like the arab \quotes{3}: he and his followers would have probably pictured a triangle or perhaps three dots arranged on the vertices of a triangle.\\
+Our puzzle is gloriously geometrical in nature and would have probably been a greatest hit among ancient Greeks. Nonetheless, since the connection between geometry and arithmetic could sometimes be very profound and illuminating\footnote{I hope my reader is not one of those obsessive weirdos seeking everywhere for the Fibonacci sequence or the Golden ratio.}, I'm going to rephrase our squared grid problem in purely arithmetical terms.
 
+The basic idea is quite simple: we have an NxN squared grid of points, which represent the squared integer $N^{2} (N \in \mathbb{N})$; joining all the points with segments corresponds to summing the numbers of points belonging to each segment in order to get the value $N^2$; if one point is touched by more than one segment is anyway counted only once. See \autoref{fig:grid-arithmetical-interpretation} for a visual example.
+%% TODO think well about these images: put the number decomposition below the image.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.25\textwidth]{images/4x4_grid_iteration_solution.png}
+\caption*{\emph{16 = 4 + 3 + 3 + 2 + 2 + 2}}
+\caption{A possible arithmetical interpretation of a grid covering path: the numbers of points falling on each segment are summed in order to get the squared integer associated to the grid, in this case 4x4=16. Each point must be counted only once even if it belongs to multiple lines. I arbitrarily decided the grouping/counting order to be the encounter order of the lines as drawn by means of the recipe depicted in \autoref{fig:6x6_grid_example}.}
+\label{fig:grid-arithmetical-interpretation}
+\end{figure}
+
+Under this light, the squared grid puzzle (which -recall- requests to connect all the points of the grid with the fewest number of strokes and without lifting the pen from the table) can be formulated as a problem of combinatorics:\\
+\\
+\emph{
+For each squared integer $N^2$, consider all the possible ways to sum integers to get that number. The goal is to find the shortest sequences of integers summing to the given squared integer $N^2$ and satisfying the constraints inherited from the geometrical problem:
+\begin{itemize}
+	\item
+		Each line of the solution could span at most N points $\iff$ Each addend must be less than N.
+	\item
+		The segments are drawn without lifting the pen from the paper $\iff$ I really don't have any clue on how to codify it arithmetically!
+\end{itemize}
+}
+The arithmetical counterpart of the squared grid puzzle sounds actually quite complicated. I didn't figure out yet how to tackle this combinatorial version of the problem or how to put it in a more approachable fashion: this is an interesting open point of the paper, and so far I didn't found any related literature on it.
+
+Having shown off my limits, I restrict the reach of this section to discuss the arithmetical interpretation of the spiral-shaped solution introduced in the previous sections. The solutions for the first grids are displayed in \autoref{fig:solution-number-decomposition} together with the decomposition of the squared integer $N^2$ the solution represents.
+\begin{figure}
+\begin{subfigure}[b]{.3\linewidth}
+\includegraphics[width=\linewidth]{images/9-dots-solution.png}
+\caption{9 = 3+2+2+2}\label{fig-a}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.3\linewidth}
+\includegraphics[width=\linewidth]{images/4x4_grid_iteration_solution.png}
+\caption{16=4+3+3+2+2+2}\label{fig-b}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.3\linewidth}
+\includegraphics[width=\linewidth]{images/5x5-grid-solution.png}
+\caption{25=5+4+4+3+3+2+2+2}\label{fig-c}
+\end{subfigure}
+\hfill
+%% BEGIN COMMENT
+\begin{comment}
+\begin{subfigure}[b]{.23\linewidth}
+\includegraphics[width=\linewidth]{images/6x6_grid_solution.png}
+\caption{36=6+5+5+4+4+3+3+2+2+2}\label{fig-d}
+\end{subfigure}
+\end{comment}
+%% END COMMENT
+\caption{The spiral-shaped solutions to the puzzle for the lowest-order grids, together with the related arithmetical decomposition of the squared integer.}
+\label{fig:solution-number-decomposition}
+\end{figure}
+So, using a consistent counting convention we can see a recursive relationship:\\
+\begin{enumerate}
+	\item[] % [] suppress bullet
+		$3 \times 3 = 9 \Leftrightarrow 3 + 2 + 2 + 2 \equiv S(3)$
+	\item[]
+		$4 \times 4 =16 \Leftrightarrow 4 + 3+ 3 + 2 + 2 + 2 \equiv S(4) = 4 + 3 + S(3) $
+	\item[]
+		$5 \times 5 =25 \Leftrightarrow 5 + 4 + 4 + 3+ 3 + 2 + 2 + 2 \equiv S(5) = 5 + 4 + S(4)$
+\end{enumerate}
+and so on and so forth, where I used the notation $S(N)$ to indicate the chosen sum decomposition of the squared integer. This progression can be summarized as follows:
+\begin{equation}
+\begin{aligned}
+&S(N) = N + N -1 + S(N - 1), \ \ \ \ \ \  (N \geq 3, N \in \mathbb{N})\\
+&S(3) = 3 + 2 + 2 + 2
+\end{aligned}
+\end{equation}
+which in turn is a convoluted way to represent the decomposition:
+\begin{equation}
+N^2 = N + N - 1 + N - 1 + N - 2 + .. + 3 + 2 + 2 + 2.
+\end{equation}
+I know what you're thinking: all these arithmetical manipulations seem pretty pointless, and you are right! My goal in this section was just to shed light on a potential interesting branch the analysis of the puzzle could lead to; if that makes sense, you could try tinkering with this idea on your own and let us know the results.
 
 \hypertarget{final-notes}{
 	\section{Final notes}
@@ -287,7 +379,10 @@ I'll address the problem in multiple dimensions, you bet! I would also like to e
 	\item
 		\href{https://math.stackexchange.com/questions/23193/not-lifting-your-pen-on-the-n-times-n-grid}{https://math.stackexchange.com/questions/23193/not-lifting-your-pen-on-the-n-times-n-grid}
 	\item
-		\href{https://math.stackexchange.com/questions/1388840/number-of-lines-to-connect-n-times-n-dots}{https://math.stackexchange.com/questions/1388840/number-of-lines-to-connect-n-times-n-dots} %TODO get the reference to the cited paper
+		\href{https://math.stackexchange.com/questions/1388840/number-of-lines-to-connect-n-times-n-dots}{https://math.stackexchange.com/questions/1388840/number-of-lines-to-connect-n-times-n-dots}
+	\item
+		%TODO add reference to academic papers in a proper form (indexing and so on)
+		\href{https://arxiv.org/abs/1311.0452}{Covering Paths and Trees for Planar Grids, Balázs Keszegh}
 	\item
 		A link to a really valid \href{http://utenti.quipo.it/base5/geopiana/loyd9punti4linee.htm}{online reference (in Italian)}
 	\item
