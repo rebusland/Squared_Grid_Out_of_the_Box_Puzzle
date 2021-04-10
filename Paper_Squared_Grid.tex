@@ -46,6 +46,9 @@
 %\usepackage{fancyvrb} % verbatim replacement that allows latex
 \usepackage{grffile} % extends the file name processing of package graphics 
 
+% ..to use side captions
+\usepackage{sidecap}
+
 % Math
 \usepackage{amsmath} % Equations
 \usepackage{amssymb} % Equations
@@ -91,15 +94,13 @@
 
 \begin{abstract}
 The nine-dots puzzle is a mainstream brain-teaser. It's often sponsored by business coaches and management consultants as a benchmark of creative thinking, as its solution requires to ``think outside-the-box".
-In this paper, I review the nine-dots puzzle and then analyze a generalized version of the original problem, which is extended to an arbitrarily-sized squared grid: i.e, the starting \emph{9-dots puzzle} becomes the generic \emph{9-16-25-36.. dots puzzle}. First, I show an algorithm to achieve a general solution to the problem: you'll learn that starting from a particular grid size upwards, consultants can no longer enthrall us with out-of-the-box tricks. I then provide a proof of optimality of the given solution. Finally, I propose a possible arithmetical interpretation of the puzzle and of the solutions to it.
+In this paper, I review the nine-dots puzzle and then analyze a generalized version of the original problem, which is extended to an arbitrarily-sized squared grid: i.e, the starting \emph{9-dots puzzle} becomes the generic \emph{9-16-25-36.. dots puzzle}. First, I show an algorithm to achieve a general solution to the problem: you'll learn that starting from a particular grid size upwards, consultants can no longer enthrall us with out-of-the-box tricks. I then provide a proof of optimality of the given solutions. Finally, I discuss a possible arithmetical interpretation of the solutions, and (unsuccessfully) try to rephrase our puzzle as a problem of combinatorics.
 \\
 \\
 \textbf{Disclaimer}: the squared grid problem has already been solved and thoroughly treated: references to related works are disclosed all over the paper.
-This document simply aims to be an enjoyable and informal digression on an appealing mathematical puzzle, whose analysis could be grasped by anyone equipped with a shap mind even if lacking of a strong mathematical background. Under this premises, I'm pretty confident to say that the present is one of the most organized, well-written and approachable work on the topic, whether the remarks I make are original or not (I don't want to waste precious days perusing obscure papers and websites for the sole purpose of checking whether some other strange guy in the world rephrased a concept in the same way I did). If you disagree with that, I am very open to critics and eager to gather feedbacks. 
+This document simply aims to be an enjoyable and informal digression on an appealing mathematical puzzle, whose analysis could be grasped by anyone equipped with a shap mind even if lacking of a strong mathematical background. Under this premises, I'm pretty confident to say that the present is one of the most organized, well-written and approachable work on the topic, whether the remarks I make are original or not (I don't want to waste precious days perusing obscure papers and websites for the sole purpose of checking whether some other strange guy in the world rephrased a concept in the same way I did). If you disagree with that and have suggestions to improve the paper, I am very open to critics and eager to gather feedbacks. 
 
 
-%Marco Ripà and Pablo Ramirez first extended the nine-dots puzzle to an arbitrarily-sized squared grid and then also to multiple dimensions!
-%As regards the arithmetical interpretation of the solution to the puzzle that I'll provide, so far I didn't find any counterpart by searching online but I may be wrong: in case it's an original remark, you're welcome!
 \end{abstract}
 
 \newpage
@@ -265,32 +266,32 @@ Thus, only by examining the form of the trials and exploiting the geometry of th
 	\label{arithmetical-interpretation}
 }
 I know that at first glance you find geometric figures more relaxing and appealing than formulas or numbers, despite your level of mathematical sophistication; and that's fine: after all, I guess my reader is a mammal and therefore endowed with a powerful visual cortex refined by ages of evolution. Even the ancient Greeks, the mathematical nerds \emph{par excellence} of the ancient world, concieved their results through the inspection of geometrical entities. Pythagoras would have never codified the idea of \quotes{three} into a single doubly-bulged symbol like the arab \quotes{3}: he and his followers would have probably pictured a triangle or perhaps three dots arranged on the vertices of a triangle.\\
-Our puzzle is gloriously geometrical in nature and would have probably been a greatest hit among ancient Greeks. Nonetheless, since the connection between geometry and arithmetic could sometimes be very profound and illuminating\footnote{I hope my reader is not one of those obsessive weirdos seeking everywhere for the Fibonacci sequence or the Golden ratio.}, I'm going to rephrase our squared grid problem in purely arithmetical terms.
+Our puzzle is gloriously geometrical in nature and would have probably been a greatest hit among the ancient Greeks. Nonetheless, since the connection between geometry and arithmetic could sometimes be very profound and illuminating\footnote{I hope my reader is not one of those obsessive weirdos seeking everywhere for the Fibonacci sequence or the Golden ratio.}, let's try to rephrase our squared grid problem in arithmetical terms and see if something interesting comes out.
 
-The basic idea is quite simple: we have an NxN squared grid of points, which represent the squared integer $N^{2} (N \in \mathbb{N})$; joining all the points with segments corresponds to summing the numbers of points belonging to each segment in order to get the value $N^2$; if one point is touched by more than one segment is anyway counted only once. See \autoref{fig:grid-arithmetical-interpretation} for a visual example.
+The basic idea is quite simple: we have an $N\times N$ squared grid of points, which represent the squared integer $N^{2} (N \in \mathbb{N})$; joining all the points with segments corresponds to summing the numbers of points belonging to each segment in order to get the value $N^2$; if one point is touched by more than one segment is anyway counted only once. See \autoref{fig:grid-arithmetical-interpretation} for a visual example.
 %% TODO think well about these images: put the number decomposition below the image.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.25\textwidth]{images/4x4_grid_iteration_solution.png}
 \caption*{\emph{16 = 4 + 3 + 3 + 2 + 2 + 2}}
-\caption{A possible arithmetical interpretation of a grid covering path: the numbers of points falling on each segment are summed in order to get the squared integer associated to the grid, in this case 4x4=16. Each point must be counted only once even if it belongs to multiple lines. I arbitrarily decided the grouping/counting order to be the encounter order of the lines as drawn by means of the recipe depicted in \autoref{fig:6x6_grid_example}.}
+\caption{A possible arithmetical interpretation of a grid covering path: the numbers of points falling on each segment are summed in order to get the squared integer associated to the grid, in this case $4\times 4=16$. Each point must be counted only once even if it belongs to multiple lines. I arbitrarily decided the grouping/counting order to be the encounter order of the lines as drawn by means of the recipe depicted in \autoref{fig:6x6_grid_example}.}
 \label{fig:grid-arithmetical-interpretation}
 \end{figure}
 
-Under this light, the squared grid puzzle (which -recall- requests to connect all the points of the grid with the fewest number of strokes and without lifting the pen from the table) can be formulated as a problem of combinatorics:\\
+Under this light, the squared grid puzzle (which -recall- requests to connect all the points of the grid with the fewest number of strokes and without lifting the pen from the table) might be formulated as a problem of combinatorics:\\
 \\
 \emph{
 For each squared integer $N^2$, consider all the possible ways to sum integers to get that number. The goal is to find the shortest sequences of integers summing to the given squared integer $N^2$ and satisfying the constraints inherited from the geometrical problem:
 \begin{itemize}
 	\item
-		Each line of the solution could span at most N points $\iff$ Each addend must be less than N.
+		Each line of the solution could span at most N points $\iff$ Each addend must be less than or equal to N.
 	\item
-		The segments are drawn without lifting the pen from the paper $\iff$ I really don't have any clue on how to codify it arithmetically!
+		The segments are drawn without lifting the pen from the paper $\iff$ I really don't have any clue on how to codify this in arithmetical terms!
 \end{itemize}
 }
-The arithmetical counterpart of the squared grid puzzle sounds actually quite complicated. I didn't figure out yet how to tackle this combinatorial version of the problem or how to put it in a more approachable fashion: this is an interesting open point of the paper, and so far I didn't found any related literature on it.
+Yes, shame on me! I did not even figure out how to rephrase the puzzle in a combinatorial fashion: this is perhaps an interesting open point of the paper, and so far I didn't found any related literature on it. The combinatorial counterpart of the squared grid puzzle seems in any case quite complicated stuff, and could probably be ascribed to the fascinating field of mathematics known as \href{https://mathworld.wolfram.com/CombinatorialGeometry.html}{combinatorial geometry} (TODO add ref to wolfram page).
 
-Having shown off my limits, I restrict the reach of this section to discuss the arithmetical interpretation of the spiral-shaped solution introduced in the previous sections. The solutions for the first grids are displayed in \autoref{fig:solution-number-decomposition} together with the decomposition of the squared integer $N^2$ the solution represents.
+Having shown off my limits, I restrict the reach of this section to discuss the arithmetical interpretation of the spiral-shaped solution introduced in the previous sections. The solutions to the lowest-order grids are displayed in \autoref{fig:solution-number-decomposition} together with the decomposition of the squared integer $N^2$ the solution represents.
 \begin{figure}
 \begin{subfigure}[b]{.3\linewidth}
 \includegraphics[width=\linewidth]{images/9-dots-solution.png}
@@ -346,24 +347,88 @@ I know what you're thinking: all these arithmetical manipulations seem pretty po
 }
 
 \paragraph{Acknowledgements} \mbox{} \\ % mbox needed for having carriage return after "paragraph"
-Marco Ripà posed the squared grid brain-teaser during one of its stimulating \href{https://www.youtube.com/watch?v=rh-ONRXcHok}{YouTube live sessions} (in Italian). I am obliged to him for the great fun I had in tackling this problem, which in turn inspired all the analysis and ideas that followed.
+Marco Ripà posed the squared grid brain-teaser during one of his stimulating \href{https://www.youtube.com/watch?v=rh-ONRXcHok}{YouTube's live sessions} (in Italian): that's how this problem came to my attention; I am obliged to him for the great fun I had in tackling this problem, which in turn inspired all the analysis and ideas that followed. Marco Ripà itself published some paper on the extension of the \emph{nine-dots puzzle} to arbitrarily-sized grids and to multiple dimensions! (TODO add references to Ripà and Remirez).
 
 \paragraph{Technical note for computer nerds} \mbox{} \\
-Python was used to code the solver algorithm and produce the explanatory images of the paper. You can find the implementation in the attached Jupyter notebook, in which you can also display (and save) a nice animation drawing the solution to the puzzle.
+Python was used to code the solver algorithm and produce the explanatory images of the paper. You can find the implementation in the attached Jupyter notebook, in which you can also display a nice animation drawing the solution to the puzzle.
 
 \paragraph{Future developments} \mbox{} \\
-I'll address the problem in multiple dimensions, you bet! I would also like to extend the solver's code to handle this more general case; hence, as a plus I could produce animations drawing the solution for three-dimensional grids.
+I'll address the problem in multiple dimensions, you bet! I would also like to extend the solver's code to handle this more general case; hence, as a plus I could produce animations drawing the solution for three-dimensional grids. The attemp to rephrase the puzzle as a problem of combinatorics, discussed in \autoref{arithmetical-interpretation}, led to a \emph{cul-de-sac}: but who knows, right?\\
+In this reference (TODO add ref) the dots of the grid are joined through arc of circumferences instead of lines: that seems a quite funny variation!\\
+It would also be possible to analyze our puzzle with the additional constraint that the segments of the polyline are not allowed to cross each other. Beware: the more general and sophisticad the problem becomes, the more likely we'll be forced to study \emph{graph theory}!
 
+Of course, you and I can keep going to add proposals into the suggestion box: anyway, recall that the only thing that matters is not to put ourselves into it.
+
+%% APPENDICES %%
 \hypertarget{appendices}{
 	\section{Appendices}
 	\label{appendices}
 }
-%% Creative solutions nine-dots: folding, dots size...
 
+\hypertarget{best-solutions-nine-dots-puzzle} {
+	\subsection{Best solutions to the nine-dots puzzle}
+	\label{best-solutions-nine-dots-puzzle}
+}
+
+% side caption [width][positioning]
+\begin{SCfigure}[1.5][!h]
+\includegraphics[width=0.35\textwidth]{images/nine-dots-roll-paper.png}
+\caption{You can roll the paper and join the dots with a single line (source: TODO add ref to wikipedia page).}
+\label{nine-dots-roll-paper}
+\end{SCfigure}
+
+\begin{SCfigure}[1.5][!h]
+\includegraphics[width=0.35\textwidth]{images/nine-dots-finite-width.png}
+\caption{Cheat on the size of the dots: the puzzle should specify whether the dots are physical or geometrical. Question: given a dot size, which is the smallest piece of paper allowing you to still solve the puzzle using this trick?}
+\label{nine-dots-dots-width}
+\end{SCfigure}
+
+\begin{SCfigure}[1.5][!h]
+\includegraphics[width=0.3\textwidth]{images/9-dots-line-width.png}
+\caption{Cheat on the size of the lines (source: Google images..).}
+\label{nine-dots-line-width}
+\end{SCfigure}
+
+\begin{SCfigure}[1.5][!h]
+\includegraphics[width=0.3\textwidth]{images/9-dots-origami-solution.png}
+\caption{A one-line origami solution (source: www.archimedes-lab.com).}
+\label{nine-dots-origami-solution}
+\end{SCfigure}
+
+You can also cut the paper in stripes each one containing a row of three dots, line these stripes and finally draw a single segment through them..\\
+Do you have some other ace up the sleeve?
+
+\hypertarget{appendices-in-the-box} {
+	\subsection{Legitimate in-the-box}
+	\label{appendices-in-the-box}
+}
 %% Image of the cell phone grid to unlock the phone
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{images/smartphone_nine_dots.jpg}
+\caption{Now you'll see the nine-dots puzzle everywhere! NB: even your smartphone enforces you to draw patterns inside-the-box. (source: Google images..)}
+\label{smartphone-nine-dots}
+\end{figure}
 
 %% Cat in a paper box, always cute
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.32\textwidth}
+	\includegraphics[width=\textwidth]{images/cat-in-the-box-1.jpg}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.32\textwidth}
+	\includegraphics[width=\textwidth]{images/cat-in-the-box-3.jpg}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.32\textwidth}
+	\includegraphics[width=\textwidth]{images/cat-in-the-box-4.jpg}
+	\end{subfigure}
+	\caption{Awww.. they are allowed to stay in-the-box. (source: Google images..)}
+	\label{fig:cat-in-the-box}
+\end{figure}
 
+%% REFERENCES %%
 \hypertarget{references}{
 	\section{References}
 	\label{references}
@@ -373,7 +438,7 @@ I'll address the problem in multiple dimensions, you bet! I would also like to e
 	\item
 		The basic nine-dots puzzle has been first cited here: \emph{Cyclopedia of Puzzles, Samuel Loyd (1914)}.
 	\item
-	\href{https://en.wikipedia.org/wiki/Thinking_outside_the_box}{Wikipedia page on out-of-the-box thinking} is worth reading: the 9-dots puzzle is thoroughly discussed.
+		\href{https://en.wikipedia.org/wiki/Thinking_outside_the_box}{Wikipedia page on out-of-the-box thinking} is worth reading: the 9-dots puzzle is thoroughly discussed.
 	\item
 		\href{http://www.mathpuzzle.com/dots.html}{http://www.mathpuzzle.com/dots.html}
 	\item
@@ -384,7 +449,9 @@ I'll address the problem in multiple dimensions, you bet! I would also like to e
 		%TODO add reference to academic papers in a proper form (indexing and so on)
 		\href{https://arxiv.org/abs/1311.0452}{Covering Paths and Trees for Planar Grids, Balázs Keszegh}
 	\item
-		A link to a really valid \href{http://utenti.quipo.it/base5/geopiana/loyd9punti4linee.htm}{online reference (in Italian)}
+		\href{https://mathworld.wolfram.com/CombinatorialGeometry.html}{https://mathworld.wolfram.com/CombinatorialGeometry.html}
+	%\item
+		%A link to a really valid \href{http://utenti.quipo.it/base5/geopiana/loyd9punti4linee.htm}{online reference (in Italian)}
 	\item
 		\emph{Marco Ripà and Pablo Ramirez, Il Nine Dots Puzzle esteso a N×N×\ldots×N punti}.
 	\item
